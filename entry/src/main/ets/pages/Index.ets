@@ -11,12 +11,18 @@ const DOMAIN = 0x0000;
 struct Index {
   @State message: string = 'Hello World';
   @State password: string = '点击生成';
+  @State randomPassword: string = '点击生成';
+  @State easyPassword: string = '点击生成';
+  @State pinPassword: string = '点击生成';
   @State passwordLength: number = 8;
   @State includeLowercase: boolean = true;
   @State includeUppercase: boolean = false;
   @State includeNumbers: boolean = false;
   @State includeSymbols: boolean = false;
   @State currentIndex: number = 0;
+  @State easyPasswordLength: number = 4;
+  @State useCapitalLetters: boolean = false;
+  @State useNumbersInWord: boolean = false;
 
   build() {
     Column() {
@@ -84,14 +90,17 @@ struct Index {
             Column() {
 
               Column() {
-                Text('密码长度: ' + this.passwordLength)
+                Text('自定义新密码')
                   .fontSize(16)
                   .fontWeight(FontWeight.Medium)
-                  .margin({ bottom: 15 })
+                  .margin({ bottom: 20 })
                   .fontColor('#333333')
                   .alignSelf(ItemAlign.Start)
 
                 Row() {
+                  Text('字符')
+                    .fontSize(16)
+                    .fontColor('#333333')
                   Slider({
                     value: this.passwordLength,
                     min: 4,
@@ -99,7 +108,7 @@ struct Index {
                     step: 1,
                     style: SliderStyle.OutSet
                   })
-                    .width('85%')
+                    .width('80%')
                     .selectedColor('#0A59F7')
                     .trackThickness(4)
                     .showTips(true)
@@ -180,10 +189,10 @@ struct Index {
                 .justifyContent(FlexAlign.SpaceBetween)
                 .margin({ bottom: 30 })
 
-                Row() {
-                  ForEach(this.password.split(''), (char: string) => {
+                Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
+                  ForEach(this.randomPassword.split(''), (char: string) => {
                     Text(char)
-                      .fontSize(28)
+                      .fontSize(24)
                       .fontWeight(FontWeight.Medium)
                       .fontColor(this.getCharColor(char))
                   })
@@ -192,8 +201,9 @@ struct Index {
                 .padding(20)
                 .borderRadius(12)
                 .backgroundColor('#F5F7FF')
+                .borderWidth(1)
+                .borderColor('#0A59F7')
                 .width('100%')
-                .justifyContent(FlexAlign.Center)
 
                 Button('复制密码')
                   .width('100%')
@@ -201,12 +211,12 @@ struct Index {
                   .backgroundColor('#0A59F7')
                   .borderRadius(10)
                   .onClick(() => {
-                    if (this.password === '点击生成' || this.password === '请选择至少一个选项') {
+                    if (this.randomPassword === '点击生成' || this.randomPassword === '请选择至少一个选项') {
                       promptAction.showToast({ message: '请先生成密码' });
                       return;
                     }
                     let systemPasteboard = pasteboard.getSystemPasteboard();
-                    let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.password);
+                    let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.randomPassword);
                     systemPasteboard.setData(pasteData).then(() => {
                       promptAction.showToast({ message: '密码已复制到剪贴板' });
                     }).catch(() => {
@@ -223,7 +233,7 @@ struct Index {
                   .borderColor('#0A59F7')
                   .fontColor('#0A59F7')
                   .margin({ top: 15 })
-                  .onClick(() => this.generatePassword())
+                  .onClick(() => this.generateRandomPassword())
               }
               .width('100%')
               .padding(20)
@@ -239,15 +249,135 @@ struct Index {
           .padding({ left: 20, right: 20 })
         } else if (this.currentIndex === 1) {
           Column() {
-            Text('容易记住的密码生成器即将推出...')
-              .fontSize(16)
-              .fontColor('#666666')
-              .margin({ top: 20 })
+            Column() {
+              Text('自定义新密码')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+                .margin({ bottom: 20 })
+                .fontColor('#333333')
+                .alignSelf(ItemAlign.Start)
+
+              Row() {
+                Text('字符')
+                  .fontSize(16)
+                  .fontColor('#333333')
+                Slider({
+                  value: this.easyPasswordLength,
+                  min: 2,
+                  max: 8,
+                  step: 1,
+                  style: SliderStyle.OutSet
+                })
+                  .width('60%')
+                  .selectedColor('#0A59F7')
+                  .trackThickness(4)
+                  .showTips(true)
+                  .margin({ left: 16, right: 16 })
+                  .onChange((value: number) => {
+                    this.easyPasswordLength = value;
+                  })
+                Text(this.easyPasswordLength.toString())
+                  .fontSize(16)
+                  .fontColor('#333333')
+              }
+              .width('100%')
+              .margin({ bottom: 20 })
+
+              Row() {
+                Row() {
+                  Text('首字母大写')
+                    .fontSize(16)
+                    .fontColor('#333333')
+                  Toggle({ type: ToggleType.Switch, isOn: this.useCapitalLetters })
+                    .width(44)
+                    .height(28)
+                    .selectedColor('#0A59F7')
+                    .margin({ left: 'auto' })
+                    .onChange(checked => this.useCapitalLetters = checked)
+                }
+                .width('100%')
+              }
+              .margin({ bottom: 15 })
+
+              Row() {
+                Row() {
+                  Text('使用完整单词')
+                    .fontSize(16)
+                    .fontColor('#333333')
+                  Toggle({ type: ToggleType.Switch, isOn: this.useNumbersInWord })
+                    .width(44)
+                    .height(28)
+                    .selectedColor('#0A59F7')
+                    .margin({ left: 'auto' })
+                    .onChange(checked => this.useNumbersInWord = checked)
+                }
+                .width('100%')
+              }
+              .margin({ bottom: 30 })
+
+              Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
+                ForEach(this.easyPassword.split('-'), (word: string, index: number) => {
+                  if (index > 0) {
+                    Text('-')
+                      .fontSize(24)
+                      .fontWeight(FontWeight.Medium)
+                      .fontColor('#0A59F7')
+                  }
+                  Text(word)
+                    .fontSize(24)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor('#333333')
+                })
+              }
+              .margin({ bottom: 30 })
+              .padding(20)
+              .borderRadius(12)
+              .borderWidth(1)
+              .borderColor('#0A59F7')
+              .backgroundColor('#F5F7FF')
+              .width('100%')
+
+              Button('复制密码')
+                .width('100%')
+                .height(50)
+                .backgroundColor('#0A59F7')
+                .borderRadius(10)
+                .onClick(() => {
+                  if (this.easyPassword === '点击生成' || this.easyPassword === '请选择至少一个选项') {
+                    promptAction.showToast({ message: '请先生成密码' });
+                    return;
+                  }
+                  let systemPasteboard = pasteboard.getSystemPasteboard();
+                  let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.easyPassword);
+                  systemPasteboard.setData(pasteData).then(() => {
+                    promptAction.showToast({ message: '密码已复制到剪贴板' });
+                  }).catch(() => {
+                    promptAction.showToast({ message: '复制失败，请重试' });
+                  });
+                })
+
+              Button('刷新密码')
+                .width('100%')
+                .height(50)
+                .backgroundColor('#FFFFFF')
+                .borderRadius(10)
+                .borderWidth(2)
+                .borderColor('#0A59F7')
+                .fontColor('#0A59F7')
+                .margin({ top: 15 })
+                .onClick(() => this.generateEasyPassword())
+            }
+            .width('100%')
+            .margin({top:20})
+            .padding(20)
+            .backgroundColor('#FFFFFF')
+            .borderRadius(16)
           }
-          .width('100%')
+          .width('99%')
+          //.margin({ top: 40 })
           .height('100%')
           .backgroundColor('#F5F7FF')
-          .justifyContent(FlexAlign.Center)
+          .padding({ left: 20, right: 20 })
         } else {
           Column() {
             Text('PIN码生成器即将推出...')
@@ -279,7 +409,7 @@ struct Index {
     return '#333333'; // 其他字符保持原来的颜色
   }
 
-  private generatePassword() {
+  private generateRandomPassword() {
     let charset = '';
     if (this.includeLowercase) charset += 'abcdefghijklmnopqrstuvwxyz';
     if (this.includeUppercase) charset += 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
@@ -287,7 +417,7 @@ struct Index {
     if (this.includeSymbols) charset += '!@#$%^&*()';
 
     if (!charset) {
-      this.password = '请选择至少一个选项';
+      this.randomPassword = '请选择至少一个选项';
       return;
     }
 
@@ -295,7 +425,54 @@ struct Index {
     for (let i = 0; i < this.passwordLength; i++) {
       result += charset.charAt(Math.floor(Math.random() * charset.length));
     }
-    this.password = result;
+    this.randomPassword = result;
+  }
+
+  private generateEasyPassword() {
+    // 常用单词列表
+    const words: string[] = [
+      'time', 'year', 'way', 'day', 'man', 'thing', 'life', 'world', 'hand', 'part',
+      'child', 'eye', 'woman', 'place', 'work', 'week', 'case', 'point', 'fact', 'group',
+      'number', 'room', 'water', 'money', 'story', 'fact', 'month', 'book', 'night', 'word',
+      'food', 'home', 'air', 'line', 'city', 'earth', 'paper', 'music', 'river', 'fire'
+    ];
+
+    // 字母到数字的映射
+    const letterToNumber: Record<string, string> = {
+      'a': '4',
+      'e': '3',
+      'i': '1',
+      'o': '0',
+      's': '5',
+      't': '7'
+    };
+
+    // 生成指定数量的随机单词
+    let selectedWords: string[] = [];
+    for (let i = 0; i < this.easyPasswordLength; i++) {
+      let word = words[Math.floor(Math.random() * words.length)];
+      
+      // 如果需要首字母大写
+      if (this.useCapitalLetters) {
+        word = word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      
+      // 如果不使用完整单词，随机替换一些字母为数字
+      if (!this.useNumbersInWord) {
+        // 遍历每个可能的替换
+        for (let j = 0; j < word.length; j++) {
+          let letter = word.charAt(j).toLowerCase();
+          if (letterToNumber[letter] && Math.random() < 0.3) { // 30%的概率替换
+            word = word.substring(0, j) + letterToNumber[letter] + word.substring(j + 1);
+          }
+        }
+      }
+      
+      selectedWords.push(word);
+    }
+
+    // 用连字符连接单词
+    this.easyPassword = selectedWords.join('-');
   }
 
   aboutToAppear() {
