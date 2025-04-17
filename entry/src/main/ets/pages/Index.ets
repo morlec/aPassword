@@ -16,167 +16,267 @@ struct Index {
   @State includeUppercase: boolean = false;
   @State includeNumbers: boolean = false;
   @State includeSymbols: boolean = false;
+  @State currentIndex: number = 0;
 
   build() {
     Column() {
-
-      Text('密码生成器')
-        .fontSize(32)
-        .fontWeight(FontWeight.Bold)
-        .margin({ top:50, bottom: 40 })
-        .fontColor('#333333')
+      Column() {
+        Text('功能强大的强密码生成器，\n保障您的在线账户安全。')
+          .fontSize(19)
+          .fontColor('#666666')
+          .margin({ bottom: 40 })
+          .textAlign(TextAlign.Start)
+      }
+      .alignItems(HorizontalAlign.Start)
+      .padding({ left: 20, right: 20 })
+      .width('100%')
 
       Column() {
-        Text('密码长度: ' + this.passwordLength)
+        Text('选择密码类型')
           .fontSize(16)
-          .fontWeight(FontWeight.Medium)
-          .margin({ bottom: 15 })
-          .fontColor('#333333')
+          .fontColor('#666666')
+          .margin({ bottom: 8 })
           .alignSelf(ItemAlign.Start)
+          .padding({ left: 20 })
 
         Row() {
-          Slider({
-            value: this.passwordLength,
-            min: 4,
-            max: 32,
-            step: 1,
-            style: SliderStyle.OutSet
-          })
-            .width('85%')
-            .selectedColor('#0A59F7')
-            .trackThickness(4)
-            .showTips(true)
-            .onChange((value: number) => {
-              this.passwordLength = value;
-            })
-
-          Text(this.passwordLength.toString())
-            .fontSize(16)
-            .fontWeight(FontWeight.Medium)
-            .margin({ left: 15 })
-            .fontColor('#333333')
-        }
-        .width('90%')
-        .margin({ bottom: 30 })
-      }
-
-      Column() {
-        Text('字符类型')
-          .fontSize(16)
-          .fontWeight(FontWeight.Medium)
-          .margin({ bottom: 15 })
-          .fontColor('#333333')
-          .alignSelf(ItemAlign.Start)
-
-        Row() {
-          Column() {
-            Row() {
-              Toggle({ type: ToggleType.Switch, isOn: this.includeNumbers })
-                .width(44)
-                .height(28)
-                .selectedColor('#0A59F7')
-                .onChange(checked => this.includeNumbers = checked)
-              Text('数字')
-                .fontSize(16)
-                .fontColor('#333333')
-                .margin({ left: 10 })
-            }.width('100%')
-
-            Row() {
-              Toggle({ type: ToggleType.Switch, isOn: this.includeSymbols })
-                .width(44)
-                .height(28)
-                .selectedColor('#0A59F7')
-                .onChange(checked => this.includeSymbols = checked)
-              Text('符号')
-                .fontSize(16)
-                .fontColor('#333333')
-                .margin({ left: 10 })
-            }.width('100%').margin({ top: 15 })
-          }.width('45%')
-
-          Column() {
-            Row() {
-              Toggle({ type: ToggleType.Switch, isOn: this.includeLowercase })
-                .width(44)
-                .height(28)
-                .selectedColor('#0A59F7')
-                .onChange(checked => this.includeLowercase = checked)
-              Text('小写')
-                .fontSize(16)
-                .fontColor('#333333')
-                .margin({ left: 10 })
-            }.width('100%')
-
-            Row() {
-              Toggle({ type: ToggleType.Switch, isOn: this.includeUppercase })
-                .width(44)
-                .height(28)
-                .selectedColor('#0A59F7')
-                .onChange(checked => this.includeUppercase = checked)
-              Text('大写')
-                .fontSize(16)
-                .fontColor('#333333')
-                .margin({ left: 10 })
-            }.width('100%').margin({ top: 15 })
-          }.width('45%')
-        }
-        .width('90%')
-        .justifyContent(FlexAlign.SpaceBetween)
-        .margin({ bottom: 30 })
-      }
-
-      Text(this.password)
-        .fontSize(28)
-        .fontWeight(FontWeight.Medium)
-        .margin({ top: 20, bottom: 30 })
-        .padding(20)
-        .borderWidth(1)
-        .borderColor('#0A59F7')
-        .borderRadius(12)
-        .backgroundColor('#F5F5F5')
-        .width('90%')
-        .textAlign(TextAlign.Center)
-        .fontColor('#333333')
-
-      Column() {
-        Button('复制密码')
-          .width('90%')
-          .height(50)
-          .backgroundColor('#0A59F7')
-          .borderRadius(10)
-          .onClick(() => {
-            if (this.password === '点击生成' || this.password === '请选择至少一个选项') {
-              promptAction.showToast({ message: '请先生成密码' });
-              return;
+          ForEach(['随机', '容易记住', 'PIN'], (title: string, index: number) => {
+            Column() {
+              Row() {
+                if (title === '随机') {
+                  Text('⟳')
+                    .fontSize(18)
+                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                    .margin({ right: 4 })
+                } else if (title === '容易记住') {
+                  Text('💡')
+                    .fontSize(16)
+                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                    .margin({ right: 4 })
+                } else if (title === 'PIN') {
+                  Text('⚅')
+                    .fontSize(18)
+                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                    .margin({ right: 4 })
+                }
+                Text(title)
+                  .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                  .fontSize(16)
+                  .fontWeight(this.currentIndex === index ? FontWeight.Medium : FontWeight.Regular)
+              }
+              .justifyContent(FlexAlign.Center)
             }
-            let systemPasteboard = pasteboard.getSystemPasteboard();
-            let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.password);
-            systemPasteboard.setData(pasteData).then(() => {
-              promptAction.showToast({ message: '密码已复制到剪贴板' });
-            }).catch(() => {
-              promptAction.showToast({ message: '复制失败，请重试' });
-            });
+            .width('33.33%')
+            .height(45)
+            .backgroundColor(this.currentIndex === index ? '#F5F7FF' : '#FFFFFF')
+            .borderRadius(8)
+            .justifyContent(FlexAlign.Center)
+            .onClick(() => {
+              this.currentIndex = index;
+            })
           })
+        }
+        .width('100%')
+        .backgroundColor('#FFFFFF')
 
-        Button('刷新密码')
-          .width('90%')
-          .height(50)
-          .backgroundColor('#FFFFFF')
-          .borderRadius(10)
-          .borderWidth(2)
-          .borderColor('#0A59F7')
-          .fontColor('#0A59F7')
-          .margin({ top: 15 })
-          .onClick(() => this.generatePassword())
+        if (this.currentIndex === 0) {
+          Column() {
+            Column() {
+
+              Column() {
+                Text('密码长度: ' + this.passwordLength)
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Medium)
+                  .margin({ bottom: 15 })
+                  .fontColor('#333333')
+                  .alignSelf(ItemAlign.Start)
+
+                Row() {
+                  Slider({
+                    value: this.passwordLength,
+                    min: 4,
+                    max: 32,
+                    step: 1,
+                    style: SliderStyle.OutSet
+                  })
+                    .width('85%')
+                    .selectedColor('#0A59F7')
+                    .trackThickness(4)
+                    .showTips(true)
+                    .onChange((value: number) => {
+                      this.passwordLength = value;
+                    })
+
+                  Text(this.passwordLength.toString())
+                    .fontSize(16)
+                    .fontWeight(FontWeight.Medium)
+                    .margin({ left: 15 })
+                    .fontColor('#333333')
+                }
+                .width('100%')
+                .margin({ bottom: 30 })
+
+                Text('字符类型')
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Medium)
+                  .margin({ bottom: 15 })
+                  .fontColor('#333333')
+                  .alignSelf(ItemAlign.Start)
+
+                Row() {
+                  Column() {
+                    Row() {
+                      Toggle({ type: ToggleType.Switch, isOn: this.includeNumbers })
+                        .width(44)
+                        .height(28)
+                        .selectedColor('#0A59F7')
+                        .onChange(checked => this.includeNumbers = checked)
+                      Text('数字')
+                        .fontSize(16)
+                        .fontColor('#333333')
+                        .margin({ left: 10 })
+                    }.width('100%')
+
+                    Row() {
+                      Toggle({ type: ToggleType.Switch, isOn: this.includeSymbols })
+                        .width(44)
+                        .height(28)
+                        .selectedColor('#0A59F7')
+                        .onChange(checked => this.includeSymbols = checked)
+                      Text('符号')
+                        .fontSize(16)
+                        .fontColor('#333333')
+                        .margin({ left: 10 })
+                    }.width('100%').margin({ top: 15 })
+                  }.width('45%')
+
+                  Column() {
+                    Row() {
+                      Toggle({ type: ToggleType.Switch, isOn: this.includeLowercase })
+                        .width(44)
+                        .height(28)
+                        .selectedColor('#0A59F7')
+                        .onChange(checked => this.includeLowercase = checked)
+                      Text('小写')
+                        .fontSize(16)
+                        .fontColor('#333333')
+                        .margin({ left: 10 })
+                    }.width('100%')
+
+                    Row() {
+                      Toggle({ type: ToggleType.Switch, isOn: this.includeUppercase })
+                        .width(44)
+                        .height(28)
+                        .selectedColor('#0A59F7')
+                        .onChange(checked => this.includeUppercase = checked)
+                      Text('大写')
+                        .fontSize(16)
+                        .fontColor('#333333')
+                        .margin({ left: 10 })
+                    }.width('100%').margin({ top: 15 })
+                  }.width('45%')
+                }
+                .width('100%')
+                .justifyContent(FlexAlign.SpaceBetween)
+                .margin({ bottom: 30 })
+
+                Row() {
+                  ForEach(this.password.split(''), (char: string) => {
+                    Text(char)
+                      .fontSize(28)
+                      .fontWeight(FontWeight.Medium)
+                      .fontColor(this.getCharColor(char))
+                  })
+                }
+                .margin({ bottom: 30 })
+                .padding(20)
+                .borderRadius(12)
+                .backgroundColor('#F5F7FF')
+                .width('100%')
+                .justifyContent(FlexAlign.Center)
+
+                Button('复制密码')
+                  .width('100%')
+                  .height(50)
+                  .backgroundColor('#0A59F7')
+                  .borderRadius(10)
+                  .onClick(() => {
+                    if (this.password === '点击生成' || this.password === '请选择至少一个选项') {
+                      promptAction.showToast({ message: '请先生成密码' });
+                      return;
+                    }
+                    let systemPasteboard = pasteboard.getSystemPasteboard();
+                    let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.password);
+                    systemPasteboard.setData(pasteData).then(() => {
+                      promptAction.showToast({ message: '密码已复制到剪贴板' });
+                    }).catch(() => {
+                      promptAction.showToast({ message: '复制失败，请重试' });
+                    });
+                  })
+
+                Button('刷新密码')
+                  .width('100%')
+                  .height(50)
+                  .backgroundColor('#FFFFFF')
+                  .borderRadius(10)
+                  .borderWidth(2)
+                  .borderColor('#0A59F7')
+                  .fontColor('#0A59F7')
+                  .margin({ top: 15 })
+                  .onClick(() => this.generatePassword())
+              }
+              .width('100%')
+              .padding(20)
+              .backgroundColor('#FFFFFF')
+              .borderRadius(16)
+            }
+            .width('99%')
+            .margin({ top: 20 })
+          }
+          .width('100%')
+          .height('100%')
+          .backgroundColor('#F5F7FF')
+          .padding({ left: 20, right: 20 })
+        } else if (this.currentIndex === 1) {
+          Column() {
+            Text('容易记住的密码生成器即将推出...')
+              .fontSize(16)
+              .fontColor('#666666')
+              .margin({ top: 20 })
+          }
+          .width('100%')
+          .height('100%')
+          .backgroundColor('#F5F7FF')
+          .justifyContent(FlexAlign.Center)
+        } else {
+          Column() {
+            Text('PIN码生成器即将推出...')
+              .fontSize(16)
+              .fontColor('#666666')
+              .margin({ top: 20 })
+          }
+          .width('100%')
+          .height('100%')
+          .backgroundColor('#F5F7FF')
+          .justifyContent(FlexAlign.Center)
+        }
       }
-      .width('90%')
-      .margin({ bottom: 20 })
-      .alignItems(HorizontalAlign.Center)
+      .width('100%')
+      .height('100%')
+      .backgroundColor('#FFFFFF')
     }
     .width('100%')
     .height('100%')
     .backgroundColor('#FFFFFF')
+  }
+
+  private getCharColor(char: string): string {
+    if (/[0-9]/.test(char)) {
+      return '#0A59F7'; // 数字显示为蓝色
+    } else if (/[!@#$%^&*()]/.test(char)) {
+      return '#FF4D4F'; // 特殊字符显示为红色
+    }
+    return '#333333'; // 其他字符保持原来的颜色
   }
 
   private generatePassword() {
