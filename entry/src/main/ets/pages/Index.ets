@@ -19,24 +19,19 @@ struct Index {
 
   build() {
     Column() {
-      Text('本应用可生成安全的随机密码，请选择字符类型并调整长度后点击生成按钮。长按密码可复制使用')
-        .fontSize(20)
-        .margin({ top: 15, bottom: 10 })
-        .fontColor(Color.Gray)
-        .padding(10)
-        .backgroundColor('rgba(0,0,0,0.05)')
-        .borderRadius(8)
-        .width('90%')
 
       Text('密码生成器')
-        .fontSize(28)
+        .fontSize(32)
         .fontWeight(FontWeight.Bold)
-        .margin({ top: 20, bottom: 30 })
+        .margin({ top:50, bottom: 40 })
+        .fontColor('#333333')
 
       Column() {
         Text('密码长度: ' + this.passwordLength)
           .fontSize(16)
-          .margin({ bottom: 10 })
+          .fontWeight(FontWeight.Medium)
+          .margin({ bottom: 15 })
+          .fontColor('#333333')
           .alignSelf(ItemAlign.Start)
 
         Row() {
@@ -48,109 +43,140 @@ struct Index {
             style: SliderStyle.OutSet
           })
             .width('85%')
+            .selectedColor('#0A59F7')
+            .trackThickness(4)
+            .showTips(true)
             .onChange((value: number) => {
               this.passwordLength = value;
             })
 
           Text(this.passwordLength.toString())
             .fontSize(16)
-            .margin({ left: 10 })
+            .fontWeight(FontWeight.Medium)
+            .margin({ left: 15 })
+            .fontColor('#333333')
         }
         .width('90%')
-        .margin({ bottom: 20 })
+        .margin({ bottom: 30 })
       }
-      .margin({ bottom: 10 })
-      Text(`密码长度：${this.passwordLength}`)
-        .margin(10)
 
-        Column() {
-          Text('字符类型')
-            .fontSize(16)
-            .margin({ bottom: 10 })
-            .alignSelf(ItemAlign.Start)
-
-          Row() {
-            Column() {
-              Row() {
-                Toggle({ type: ToggleType.Switch, isOn: this.includeNumbers })
-                  .width(40)
-                  .height(24)
-                  .onChange(checked => this.includeNumbers = checked)
-                Text('数字').margin({ left: 5 })
-              }.width('100%')
-
-              Row() {
-                Toggle({ type: ToggleType.Switch, isOn: this.includeSymbols })
-                  .width(40)
-                  .height(24)
-                  .onChange(checked => this.includeSymbols = checked)
-                Text('符号').margin({ left: 5 })
-              }.width('100%').margin({ top: 10 })
-            }.width('45%')
-
-            Column() {
-              Row() {
-                Toggle({ type: ToggleType.Switch, isOn: this.includeLowercase })
-                  .width(40)
-                  .height(24)
-                  .onChange(checked => this.includeLowercase = checked)
-                Text('小写').margin({ left: 5 })
-              }.width('100%')
-
-              Row() {
-                Toggle({ type: ToggleType.Switch, isOn: this.includeUppercase })
-                  .width(40)
-                  .height(24)
-                  .onChange(checked => this.includeUppercase = checked)
-                Text('大写').margin({ left: 5 })
-              }.width('100%').margin({ top: 10 })
-            }.width('45%')
-          }
-          .width('90%')
-          .justifyContent(FlexAlign.SpaceBetween)
-          .margin({ bottom: 20 })
-        }
-        .width('100%')
-
-        Text(this.password)
-          .fontSize(24)
-          .margin({ top: 20, bottom: 20 })
-          .padding(15)
-          .borderRadius(8)
-          .backgroundColor('#F5F5F5')
-          .width('90%')
-          .textAlign(TextAlign.Center)
+      Column() {
+        Text('字符类型')
+          .fontSize(16)
+          .fontWeight(FontWeight.Medium)
+          .margin({ bottom: 15 })
+          .fontColor('#333333')
+          .alignSelf(ItemAlign.Start)
 
         Row() {
-          Button('复制密码')
-            .width('45%')
-            .height(48)
-            .backgroundColor('#0A59F7')
-            .onClick(() => {
-              if (this.password === '点击生成' || this.password === '请选择至少一个选项') {
-                promptAction.showToast({ message: '请先生成密码' });
-                return;
-              }
-              let systemPasteboard = pasteboard.getSystemPasteboard();
-              let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.password);
-              systemPasteboard.setData(pasteData).then(() => {
-                promptAction.showToast({ message: '密码已复制到剪贴板' });
-              }).catch(() => {
-                promptAction.showToast({ message: '复制失败，请重试' });
-              });
-            })
+          Column() {
+            Row() {
+              Toggle({ type: ToggleType.Switch, isOn: this.includeNumbers })
+                .width(44)
+                .height(28)
+                .selectedColor('#0A59F7')
+                .onChange(checked => this.includeNumbers = checked)
+              Text('数字')
+                .fontSize(16)
+                .fontColor('#333333')
+                .margin({ left: 10 })
+            }.width('100%')
 
-          Button('刷新密码')
-            .width('45%')
-            .height(48)
-            .backgroundColor('#0A59F7')
-            .onClick(() => this.generatePassword())
+            Row() {
+              Toggle({ type: ToggleType.Switch, isOn: this.includeSymbols })
+                .width(44)
+                .height(28)
+                .selectedColor('#0A59F7')
+                .onChange(checked => this.includeSymbols = checked)
+              Text('符号')
+                .fontSize(16)
+                .fontColor('#333333')
+                .margin({ left: 10 })
+            }.width('100%').margin({ top: 15 })
+          }.width('45%')
+
+          Column() {
+            Row() {
+              Toggle({ type: ToggleType.Switch, isOn: this.includeLowercase })
+                .width(44)
+                .height(28)
+                .selectedColor('#0A59F7')
+                .onChange(checked => this.includeLowercase = checked)
+              Text('小写')
+                .fontSize(16)
+                .fontColor('#333333')
+                .margin({ left: 10 })
+            }.width('100%')
+
+            Row() {
+              Toggle({ type: ToggleType.Switch, isOn: this.includeUppercase })
+                .width(44)
+                .height(28)
+                .selectedColor('#0A59F7')
+                .onChange(checked => this.includeUppercase = checked)
+              Text('大写')
+                .fontSize(16)
+                .fontColor('#333333')
+                .margin({ left: 10 })
+            }.width('100%').margin({ top: 15 })
+          }.width('45%')
         }
         .width('90%')
         .justifyContent(FlexAlign.SpaceBetween)
+        .margin({ bottom: 30 })
+      }
+
+      Text(this.password)
+        .fontSize(28)
+        .fontWeight(FontWeight.Medium)
+        .margin({ top: 20, bottom: 30 })
+        .padding(20)
+        .borderWidth(1)
+        .borderColor('#0A59F7')
+        .borderRadius(12)
+        .backgroundColor('#F5F5F5')
+        .width('90%')
+        .textAlign(TextAlign.Center)
+        .fontColor('#333333')
+
+      Column() {
+        Button('复制密码')
+          .width('90%')
+          .height(50)
+          .backgroundColor('#0A59F7')
+          .borderRadius(10)
+          .onClick(() => {
+            if (this.password === '点击生成' || this.password === '请选择至少一个选项') {
+              promptAction.showToast({ message: '请先生成密码' });
+              return;
+            }
+            let systemPasteboard = pasteboard.getSystemPasteboard();
+            let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.password);
+            systemPasteboard.setData(pasteData).then(() => {
+              promptAction.showToast({ message: '密码已复制到剪贴板' });
+            }).catch(() => {
+              promptAction.showToast({ message: '复制失败，请重试' });
+            });
+          })
+
+        Button('刷新密码')
+          .width('90%')
+          .height(50)
+          .backgroundColor('#FFFFFF')
+          .borderRadius(10)
+          .borderWidth(2)
+          .borderColor('#0A59F7')
+          .fontColor('#0A59F7')
+          .margin({ top: 15 })
+          .onClick(() => this.generatePassword())
+      }
+      .width('90%')
+      .margin({ bottom: 20 })
+      .alignItems(HorizontalAlign.Center)
     }
     .width('100%')
     .height('100%')
+    .backgroundColor('#FFFFFF')
   }
 
   private generatePassword() {
