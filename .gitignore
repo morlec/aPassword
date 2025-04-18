@@ -1,9 +1,17 @@
-/node_modules
-/oh_modules
+# macOS
+.DS_Store
+
+# Project specific
+*.new
+.preview/
+.build/
+.hvigor/
+.ohpm/
+node_modules/
+build/
+
 /local.properties
 /.idea
-**/build
-/.hvigor
 .cxx
 /.clangd
 /.clang-format
