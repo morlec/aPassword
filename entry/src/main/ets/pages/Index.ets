@@ -31,7 +31,7 @@ struct Index {
         Text('功能强大的强密码生成器，\n保障您的在线账户安全。')
           .fontSize(19)
           .fontColor('#666666')
-          .margin({ bottom: 40 })
+          .margin({ bottom: 24 })
           .textAlign(TextAlign.Start)
       }
       .alignItems(HorizontalAlign.Start)
@@ -39,217 +39,203 @@ struct Index {
       .width('100%')
 
       Column() {
-        Text('选择密码类型')
-          .fontSize(16)
-          .fontColor('#666666')
-          .margin({ bottom: 8 })
-          .alignSelf(ItemAlign.Start)
-          .padding({ left: 20 })
-
-        Row() {
-          ForEach(['随机', '容易记住', 'PIN'], (title: string, index: number) => {
-            Column() {
-              Row() {
-                if (title === '随机') {
-                  Text('⟳')
-                    .fontSize(18)
-                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
-                    .margin({ right: 4 })
-                } else if (title === '容易记住') {
-                  Text('💡')
-                    .fontSize(16)
-                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
-                    .margin({ right: 4 })
-                } else if (title === 'PIN') {
-                  Text('⚅')
-                    .fontSize(18)
-                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
-                    .margin({ right: 4 })
-                }
-                Text(title)
-                  .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
-                  .fontSize(16)
-                  .fontWeight(this.currentIndex === index ? FontWeight.Medium : FontWeight.Regular)
-              }
-              .justifyContent(FlexAlign.Center)
-            }
-            .width('33.33%')
-            .height(45)
-            .backgroundColor(this.currentIndex === index ? '#F5F7FF' : '#FFFFFF')
-            .borderRadius(8)
-            .justifyContent(FlexAlign.Center)
-            .onClick(() => {
-              this.currentIndex = index;
-            })
-          })
-        }
-        .width('100%')
-        .backgroundColor('#FFFFFF')
-
-        if (this.currentIndex === 0) {
-          Column() {
-            Column() {
-
+        // 整体内容区域
+        Column() {
+          // 标签区域
+          Row() {
+            ForEach(['随机', '容易记住', 'PIN'], (title: string, index: number) => {
               Column() {
-                Text('自定义新密码')
-                  .fontSize(16)
-                  .fontWeight(FontWeight.Medium)
-                  .margin({ bottom: 20 })
-                  .fontColor('#333333')
-                  .alignSelf(ItemAlign.Start)
-
                 Row() {
-                  Text('字符')
+                  if (title === '随机') {
+                    Text('⟳')
+                      .fontSize(18)
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                      .margin({ right: 4 })
+                  } else if (title === '容易记住') {
+                    Text('💡')
+                      .fontSize(16)
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                      .margin({ right: 4 })
+                  } else if (title === 'PIN') {
+                    Text('⚅')
+                      .fontSize(18)
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                      .margin({ right: 4 })
+                  }
+                  Text(title)
+                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
                     .fontSize(16)
-                    .fontColor('#333333')
-                  Slider({
-                    value: this.passwordLength,
-                    min: 4,
-                    max: 32,
-                    step: 1,
-                    style: SliderStyle.OutSet
-                  })
-                    .width('80%')
-                    .selectedColor('#0A59F7')
-                    .trackThickness(4)
-                    .showTips(true)
-                    .onChange((value: number) => {
-                      this.passwordLength = value;
-                    })
-
-                  Text(this.passwordLength.toString())
-                    .fontSize(16)
-                    .fontWeight(FontWeight.Medium)
-                    .margin({ left: 15 })
-                    .fontColor('#333333')
+                    .fontWeight(this.currentIndex === index ? FontWeight.Medium : FontWeight.Regular)
                 }
-                .width('100%')
-                .margin({ bottom: 30 })
-
-                Text('字符类型')
-                  .fontSize(16)
-                  .fontWeight(FontWeight.Medium)
-                  .margin({ bottom: 15 })
-                  .fontColor('#333333')
-                  .alignSelf(ItemAlign.Start)
-
-                Row() {
-                  Column() {
-                    Row() {
-                      Toggle({ type: ToggleType.Switch, isOn: this.includeNumbers })
-                        .width(44)
-                        .height(28)
-                        .selectedColor('#0A59F7')
-                        .onChange(checked => this.includeNumbers = checked)
-                      Text('数字')
-                        .fontSize(16)
-                        .fontColor('#333333')
-                        .margin({ left: 10 })
-                    }.width('100%')
-
-                    Row() {
-                      Toggle({ type: ToggleType.Switch, isOn: this.includeSymbols })
-                        .width(44)
-                        .height(28)
-                        .selectedColor('#0A59F7')
-                        .onChange(checked => this.includeSymbols = checked)
-                      Text('符号')
-                        .fontSize(16)
-                        .fontColor('#333333')
-                        .margin({ left: 10 })
-                    }.width('100%').margin({ top: 15 })
-                  }.width('45%')
-
-                  Column() {
-                    Row() {
-                      Toggle({ type: ToggleType.Switch, isOn: this.includeLowercase })
-                        .width(44)
-                        .height(28)
-                        .selectedColor('#0A59F7')
-                        .onChange(checked => this.includeLowercase = checked)
-                      Text('小写')
-                        .fontSize(16)
-                        .fontColor('#333333')
-                        .margin({ left: 10 })
-                    }.width('100%')
-
-                    Row() {
-                      Toggle({ type: ToggleType.Switch, isOn: this.includeUppercase })
-                        .width(44)
-                        .height(28)
-                        .selectedColor('#0A59F7')
-                        .onChange(checked => this.includeUppercase = checked)
-                      Text('大写')
-                        .fontSize(16)
-                        .fontColor('#333333')
-                        .margin({ left: 10 })
-                    }.width('100%').margin({ top: 15 })
-                  }.width('45%')
-                }
-                .width('100%')
-                .justifyContent(FlexAlign.SpaceBetween)
-                .margin({ bottom: 30 })
-
-                Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
-                  ForEach(this.randomPassword.split(''), (char: string) => {
-                    Text(char)
-                      .fontSize(24)
-                      .fontWeight(FontWeight.Medium)
-                      .fontColor(this.getCharColor(char))
-                  })
-                }
-                .margin({ bottom: 30 })
-                .padding(20)
-                .borderRadius(12)
-                .backgroundColor('#F5F7FF')
-                .borderWidth(1)
-                .borderColor('#0A59F7')
-                .width('100%')
-
-                Button('复制密码')
-                  .width('100%')
-                  .height(50)
-                  .backgroundColor('#0A59F7')
-                  .borderRadius(10)
-                  .onClick(() => {
-                    if (this.randomPassword === '点击生成' || this.randomPassword === '请选择至少一个选项') {
-                      promptAction.showToast({ message: '请先生成密码' });
-                      return;
-                    }
-                    let systemPasteboard = pasteboard.getSystemPasteboard();
-                    let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.randomPassword);
-                    systemPasteboard.setData(pasteData).then(() => {
-                      promptAction.showToast({ message: '密码已复制到剪贴板' });
-                    }).catch(() => {
-                      promptAction.showToast({ message: '复制失败，请重试' });
-                    });
-                  })
-
-                Button('刷新密码')
-                  .width('100%')
-                  .height(50)
-                  .backgroundColor('#FFFFFF')
-                  .borderRadius(10)
-                  .borderWidth(2)
-                  .borderColor('#0A59F7')
-                  .fontColor('#0A59F7')
-                  .margin({ top: 15 })
-                  .onClick(() => this.generateRandomPassword())
+                .justifyContent(FlexAlign.Center)
               }
-              .width('100%')
-              .padding(20)
-              .backgroundColor('#FFFFFF')
-              .borderRadius(16)
-            }
-            .width('99%')
-            .margin({ top: 20 })
+              .width('33.33%')
+              .height(50)
+              .backgroundColor(this.currentIndex === index ? '#F5F7FF' : '#FFFFFF')
+              .borderRadius(index === 0 ? { topLeft: 16, topRight: 0, bottomLeft: 0, bottomRight: 0 } : 
+                           index === 2 ? { topLeft: 0, topRight: 16, bottomLeft: 0, bottomRight: 0 } : 0)
+              .justifyContent(FlexAlign.Center)
+              .onClick(() => {
+                this.currentIndex = index;
+              })
+            })
           }
           .width('100%')
-          .height('100%')
-          .backgroundColor('#F5F7FF')
-          .padding({ left: 20, right: 20 })
-        } else if (this.currentIndex === 1) {
-          Column() {
+          .margin({ bottom: 1 })
+          
+          // 内容区域
+          if (this.currentIndex === 0) {
+            Column() {
+              Text('自定义新密码')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+                .margin({ bottom: 20 })
+                .fontColor('#333333')
+                .alignSelf(ItemAlign.Start)
+
+              Row() {
+                Text('字符')
+                  .fontSize(16)
+                  .fontColor('#333333')
+                Slider({
+                  value: this.passwordLength,
+                  min: 4,
+                  max: 32,
+                  step: 1,
+                  style: SliderStyle.OutSet
+                })
+                  .width('80%')
+                  .selectedColor('#0A59F7')
+                  .trackThickness(4)
+                  .showTips(true)
+                  .onChange((value: number) => {
+                    this.passwordLength = value;
+                  })
+
+                Text(this.passwordLength.toString())
+                  .fontSize(16)
+                  .fontWeight(FontWeight.Medium)
+                  .margin({ left: 15 })
+                  .fontColor('#333333')
+              }
+              .width('100%')
+              .margin({ bottom: 30 })
+
+              Text('字符类型')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+                .margin({ bottom: 15 })
+                .fontColor('#333333')
+                .alignSelf(ItemAlign.Start)
+
+              Row() {
+                Column() {
+                  Row() {
+                    Toggle({ type: ToggleType.Switch, isOn: this.includeNumbers })
+                      .width(44)
+                      .height(28)
+                      .selectedColor('#0A59F7')
+                      .onChange(checked => this.includeNumbers = checked)
+                    Text('数字')
+                      .fontSize(16)
+                      .fontColor('#333333')
+                      .margin({ left: 10 })
+                  }.width('100%')
+
+                  Row() {
+                    Toggle({ type: ToggleType.Switch, isOn: this.includeSymbols })
+                      .width(44)
+                      .height(28)
+                      .selectedColor('#0A59F7')
+                      .onChange(checked => this.includeSymbols = checked)
+                    Text('符号')
+                      .fontSize(16)
+                      .fontColor('#333333')
+                      .margin({ left: 10 })
+                  }.width('100%').margin({ top: 15 })
+                }.width('45%')
+
+                Column() {
+                  Row() {
+                    Toggle({ type: ToggleType.Switch, isOn: this.includeLowercase })
+                      .width(44)
+                      .height(28)
+                      .selectedColor('#0A59F7')
+                      .onChange(checked => this.includeLowercase = checked)
+                    Text('小写')
+                      .fontSize(16)
+                      .fontColor('#333333')
+                      .margin({ left: 10 })
+                  }.width('100%')
+
+                  Row() {
+                    Toggle({ type: ToggleType.Switch, isOn: this.includeUppercase })
+                      .width(44)
+                      .height(28)
+                      .selectedColor('#0A59F7')
+                      .onChange(checked => this.includeUppercase = checked)
+                    Text('大写')
+                      .fontSize(16)
+                      .fontColor('#333333')
+                      .margin({ left: 10 })
+                  }.width('100%').margin({ top: 15 })
+                }.width('45%')
+              }
+              .width('100%')
+              .justifyContent(FlexAlign.SpaceBetween)
+              .margin({ bottom: 30 })
+
+              Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
+                ForEach(this.randomPassword.split(''), (char: string) => {
+                  Text(char)
+                    .fontSize(24)
+                    .fontWeight(FontWeight.Medium)
+                    .fontColor(this.getCharColor(char))
+                })
+              }
+              .margin({ bottom: 30 })
+              .padding(20)
+              .borderRadius(12)
+              .backgroundColor('#F5F7FF')
+              .borderWidth(1)
+              .borderColor('#0A59F7')
+              .width('100%')
+
+              Button('复制密码')
+                .width('100%')
+                .height(50)
+                .backgroundColor('#0A59F7')
+                .borderRadius(10)
+                .onClick(() => {
+                  if (this.randomPassword === '点击生成' || this.randomPassword === '请选择至少一个选项') {
+                    promptAction.showToast({ message: '请先生成密码' });
+                    return;
+                  }
+                  let systemPasteboard = pasteboard.getSystemPasteboard();
+                  let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.randomPassword);
+                  systemPasteboard.setData(pasteData).then(() => {
+                    promptAction.showToast({ message: '密码已复制到剪贴板' });
+                  }).catch(() => {
+                    promptAction.showToast({ message: '复制失败，请重试' });
+                  });
+                })
+
+              Button('刷新密码')
+                .width('100%')
+                .height(50)
+                .backgroundColor('#FFFFFF')
+                .borderRadius(10)
+                .borderWidth(2)
+                .borderColor('#0A59F7')
+                .fontColor('#0A59F7')
+                .margin({ top: 15 })
+                .onClick(() => this.generateRandomPassword())
+            }
+            .width('100%')
+            .padding(20)
+            .backgroundColor('#FFFFFF')
+            .borderRadius({ bottomLeft: 16, bottomRight: 16 })
+          } else if (this.currentIndex === 1) {
             Column() {
               Text('自定义新密码')
                 .fontSize(16)
@@ -369,18 +355,10 @@ struct Index {
                 .onClick(() => this.generateEasyPassword())
             }
             .width('100%')
-            .margin({top:20})
             .padding(20)
             .backgroundColor('#FFFFFF')
-            .borderRadius(16)
-          }
-          .width('99%')
-          //.margin({ top: 40 })
-          .height('100%')
-          .backgroundColor('#F5F7FF')
-          .padding({ left: 20, right: 20 })
-        } else {
-          Column() {
+            .borderRadius({ bottomLeft: 16, bottomRight: 16 })
+          } else {
             Column() {
               Text('自定义新密码')
                 .fontSize(16)
@@ -467,24 +445,26 @@ struct Index {
                 .onClick(() => this.generatePinPassword())
             }
             .width('100%')
-            .margin({top:20})
             .padding(20)
             .backgroundColor('#FFFFFF')
-            .borderRadius(16)
+            .borderRadius({ bottomLeft: 16, bottomRight: 16 })
           }
-          .width('99%')
-          .height('100%')
-          .backgroundColor('#F5F7FF')
-          .padding({ left: 20, right: 20 })
         }
+        .width('90%')
+        .backgroundColor('#FFFFFF')
+        .borderRadius(16)
+        .shadow({ radius: 8, color: 'rgba(0, 0, 0, 0.1)', offsetX: 0, offsetY: 2 })
       }
       .width('100%')
       .height('100%')
-      .backgroundColor('#FFFFFF')
+      .backgroundColor('#F5F7FF')
+      .padding({ top: 10 })
+      .justifyContent(FlexAlign.Start)
+      .alignItems(HorizontalAlign.Center)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#FFFFFF')
+    .backgroundColor('#F5F7FF')
   }
 
   private getCharColor(char: string): string {
