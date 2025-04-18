@@ -2,7 +2,7 @@ import { authentication } from '@kit.AccountKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import promptAction from '@ohos.promptAction';
-import pasteboard from '@ohos.pasteboard';
+import pasteboard from '@system/pasteboard';
 
 const DOMAIN = 0x0000;
 
@@ -28,7 +28,7 @@ struct Index {
   build() {
     Column() {
       Column() {
-        Text('功能强大的强密码生成器，\n保障您的在线账户安全。')
+        Text('\n功能强大的强密码生成器，\n保障您的在线账户安全。')
           .fontSize(19)
           .fontColor('#FFFFFF')
           .margin({ bottom: 24 })

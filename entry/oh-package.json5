@@ -7,7 +7,7 @@
   "license": "",
   "dependencies": {
     "@kit/arkui": "1.0.0",
-    "@system.pasteboard": "1.0.0"
+    "@system/pasteboard": "1.0.0"
   }
 }
 
