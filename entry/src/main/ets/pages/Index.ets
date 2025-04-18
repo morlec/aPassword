@@ -2,7 +2,7 @@ import { authentication } from '@kit.AccountKit';
 import { BusinessError } from '@kit.BasicServicesKit';
 import { hilog } from '@kit.PerformanceAnalysisKit';
 import promptAction from '@ohos.promptAction';
-import pasteboard from '@system/pasteboard';
+import pasteboard from '@ohos.pasteboard';
 
 const DOMAIN = 0x0000;
 
