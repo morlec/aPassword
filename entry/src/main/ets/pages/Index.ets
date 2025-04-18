@@ -28,7 +28,7 @@ struct Index {
   build() {
     Column() {
       Column() {
-        Text('\n功能强大的强密码生成器，\n保障您的在线账户安全。')
+        Text('\n想随机密码想破头的时候，\n打开我，帮你即刻解决烦恼。')
           .fontSize(19)
           .fontColor('#FFFFFF')
           .margin({ bottom: 24 })
