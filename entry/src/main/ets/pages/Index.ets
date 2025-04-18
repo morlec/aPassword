@@ -11,9 +11,9 @@ const DOMAIN = 0x0000;
 struct Index {
   @State message: string = 'Hello World';
   @State password: string = '点击生成';
-  @State randomPassword: string = '点击生成';
-  @State easyPassword: string = '点击生成';
-  @State pinPassword: string = '点击生成';
+  @State randomPassword: string = 'Phephe8h';
+  @State easyPassword: string = 'reflush-me';
+  @State pinPassword: string = '9419';
   @State passwordLength: number = 8;
   @State includeLowercase: boolean = true;
   @State includeUppercase: boolean = false;
@@ -23,6 +23,7 @@ struct Index {
   @State easyPasswordLength: number = 4;
   @State useCapitalLetters: boolean = false;
   @State useNumbersInWord: boolean = false;
+  @State pinLength: number = 4;
 
   build() {
     Column() {
@@ -380,15 +381,101 @@ struct Index {
           .padding({ left: 20, right: 20 })
         } else {
           Column() {
-            Text('PIN码生成器即将推出...')
-              .fontSize(16)
-              .fontColor('#666666')
-              .margin({ top: 20 })
+            Column() {
+              Text('自定义新密码')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+                .margin({ bottom: 20 })
+                .fontColor('#333333')
+                .alignSelf(ItemAlign.Start)
+
+              Row() {
+                Text('字符')
+                  .fontSize(16)
+                  .fontColor('#333333')
+                Slider({
+                  value: this.pinLength,
+                  min: 4,
+                  max: 8,
+                  step: 1,
+                  style: SliderStyle.OutSet
+                })
+                  .width('60%')
+                  .selectedColor('#0A59F7')
+                  .trackThickness(4)
+                  .showTips(true)
+                  .margin({ left: 16, right: 16 })
+                  .onChange((value: number) => {
+                    this.pinLength = value;
+                  })
+                Text(this.pinLength.toString())
+                  .fontSize(16)
+                  .fontColor('#333333')
+              }
+              .width('100%')
+              .margin({ bottom: 30 })
+
+              Text('生成密码')
+                .fontSize(16)
+                .fontWeight(FontWeight.Medium)
+                .margin({ bottom: 15 })
+                .fontColor('#333333')
+                .alignSelf(ItemAlign.Start)
+
+              Flex({ wrap: FlexWrap.Wrap, justifyContent: FlexAlign.Center, alignItems: ItemAlign.Center }) {
+                Text(this.pinPassword)
+                  .fontSize(24)
+                  .fontWeight(FontWeight.Medium)
+                  .fontColor('#0A59F7')
+              }
+              .margin({ bottom: 30 })
+              .padding(20)
+              .borderRadius(12)
+              .backgroundColor('#F5F7FF')
+              .borderWidth(1)
+              .borderColor('#0A59F7')
+              .width('100%')
+
+              Button('复制密码')
+                .width('100%')
+                .height(50)
+                .backgroundColor('#0A59F7')
+                .borderRadius(10)
+                .onClick(() => {
+                  if (this.pinPassword === '点击生成' || this.pinPassword === '请选择至少一个选项') {
+                    promptAction.showToast({ message: '请先生成密码' });
+                    return;
+                  }
+                  let systemPasteboard = pasteboard.getSystemPasteboard();
+                  let pasteData = pasteboard.createData(pasteboard.MIMETYPE_TEXT_PLAIN, this.pinPassword);
+                  systemPasteboard.setData(pasteData).then(() => {
+                    promptAction.showToast({ message: '密码已复制到剪贴板' });
+                  }).catch(() => {
+                    promptAction.showToast({ message: '复制失败，请重试' });
+                  });
+                })
+
+              Button('刷新密码')
+                .width('100%')
+                .height(50)
+                .backgroundColor('#FFFFFF')
+                .borderRadius(10)
+                .borderWidth(2)
+                .borderColor('#0A59F7')
+                .fontColor('#0A59F7')
+                .margin({ top: 15 })
+                .onClick(() => this.generatePinPassword())
+            }
+            .width('100%')
+            .margin({top:20})
+            .padding(20)
+            .backgroundColor('#FFFFFF')
+            .borderRadius(16)
           }
-          .width('100%')
+          .width('99%')
           .height('100%')
           .backgroundColor('#F5F7FF')
-          .justifyContent(FlexAlign.Center)
+          .padding({ left: 20, right: 20 })
         }
       }
       .width('100%')
@@ -473,6 +560,14 @@ struct Index {
 
     // 用连字符连接单词
     this.easyPassword = selectedWords.join('-');
+  }
+
+  private generatePinPassword() {
+    let result = '';
+    for (let i = 0; i < this.pinLength; i++) {
+      result += Math.floor(Math.random() * 10).toString();
+    }
+    this.pinPassword = result;
   }
 
   aboutToAppear() {
