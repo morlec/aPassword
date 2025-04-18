@@ -13,6 +13,7 @@
     "deliveryWithInstall": true,
     "installationFree": true,
     "pages": "$profile:main_pages",
+    "icon": "$media:startIcon",
     "abilities": [
       {
         "name": "EntryAbility",
