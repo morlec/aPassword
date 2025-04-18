@@ -30,7 +30,7 @@ struct Index {
       Column() {
         Text('功能强大的强密码生成器，\n保障您的在线账户安全。')
           .fontSize(19)
-          .fontColor('#666666')
+          .fontColor('#FFFFFF')
           .margin({ bottom: 24 })
           .textAlign(TextAlign.Start)
       }
@@ -49,21 +49,21 @@ struct Index {
                   if (title === '随机') {
                     Text('⟳')
                       .fontSize(18)
-                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
                       .margin({ right: 4 })
                   } else if (title === '容易记住') {
                     Text('💡')
                       .fontSize(16)
-                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
                       .margin({ right: 4 })
                   } else if (title === 'PIN') {
                     Text('⚅')
                       .fontSize(18)
-                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
                       .margin({ right: 4 })
                   }
                   Text(title)
-                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#666666')
+                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
                     .fontSize(16)
                     .fontWeight(this.currentIndex === index ? FontWeight.Medium : FontWeight.Regular)
                 }
@@ -71,7 +71,7 @@ struct Index {
               }
               .width('33.33%')
               .height(50)
-              .backgroundColor(this.currentIndex === index ? '#F5F7FF' : '#FFFFFF')
+              .backgroundColor(this.currentIndex === index ? '#F5F7FF' : 'rgba(255, 255, 255, 0.1)')
               .borderRadius(index === 0 ? { topLeft: 16, topRight: 0, bottomLeft: 0, bottomRight: 0 } : 
                            index === 2 ? { topLeft: 0, topRight: 16, bottomLeft: 0, bottomRight: 0 } : 0)
               .justifyContent(FlexAlign.Center)
@@ -453,18 +453,18 @@ struct Index {
         .width('90%')
         .backgroundColor('#FFFFFF')
         .borderRadius(16)
-        .shadow({ radius: 8, color: 'rgba(0, 0, 0, 0.1)', offsetX: 0, offsetY: 2 })
+        .shadow({ radius: 12, color: 'rgba(0, 0, 0, 0.3)', offsetX: 0, offsetY: 4 })
       }
       .width('100%')
       .height('100%')
-      .backgroundColor('#F5F7FF')
+      .backgroundColor('#121C40')
       .padding({ top: 10 })
       .justifyContent(FlexAlign.Start)
       .alignItems(HorizontalAlign.Center)
     }
     .width('100%')
     .height('100%')
-    .backgroundColor('#F5F7FF')
+    .backgroundColor('#121C40')
   }
 
   private getCharColor(char: string): string {
