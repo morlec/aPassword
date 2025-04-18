@@ -49,21 +49,21 @@ struct Index {
                   if (title === '随机') {
                     Text('⟳')
                       .fontSize(18)
-                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#B8C3FF')
                       .margin({ right: 4 })
                   } else if (title === '容易记住') {
                     Text('💡')
                       .fontSize(16)
-                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#B8C3FF')
                       .margin({ right: 4 })
                   } else if (title === 'PIN') {
                     Text('⚅')
                       .fontSize(18)
-                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
+                      .fontColor(this.currentIndex === index ? '#0A59F7' : '#B8C3FF')
                       .margin({ right: 4 })
                   }
                   Text(title)
-                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#FFFFFF')
+                    .fontColor(this.currentIndex === index ? '#0A59F7' : '#B8C3FF')
                     .fontSize(16)
                     .fontWeight(this.currentIndex === index ? FontWeight.Medium : FontWeight.Regular)
                 }
@@ -71,7 +71,7 @@ struct Index {
               }
               .width('33.33%')
               .height(50)
-              .backgroundColor(this.currentIndex === index ? '#F5F7FF' : 'rgba(255, 255, 255, 0.1)')
+              .backgroundColor(this.currentIndex === index ? '#F5F7FF' : 'rgba(255, 255, 255, 0.15)')
               .borderRadius(index === 0 ? { topLeft: 16, topRight: 0, bottomLeft: 0, bottomRight: 0 } : 
                            index === 2 ? { topLeft: 0, topRight: 16, bottomLeft: 0, bottomRight: 0 } : 0)
               .justifyContent(FlexAlign.Center)
